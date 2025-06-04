@@ -1,0 +1,53 @@
+db.catalog.insertMany([
+    {
+        product_name: "Wireless Mouse",
+        description: "A high-precision wireless mouse",
+        category: "electronics",
+        price: 29.99,
+        tags: ["wireless", "mouse", "electronics", "ergonomic"]
+    },
+    {
+        product_name: "Gaming Keyboard",
+        description: "RGB mechanical gaming keyboard ",
+        category: "electronics",
+        price: 99.99,
+        tags: ["keyboard", "gaming", "mechanical", "RGB"]
+    },
+    {
+        product_name: "Leather Wallet",
+        description: "Genuine leather wallet with multiple card slots.",
+        category: "fashion",
+        price: 49.99,
+        tags: ["wallet", "leather", "fashion", "accessories"]
+    },
+    {
+        product_name: "Bluetooth Headphones",
+        description: "Noise-canceling Bluetooth headphones ",
+        category: "electronics",
+        price: 79.99,
+        tags: ["headphones", "bluetooth", "electronics", "audio"]
+    }
+    
+]);
+
+
+1) Enable text search on the description and tags fields.
+   Before we can run text search queries, we need to create a text index on the relevant fields
+   Create a text index on 'description' and 'tags' fields
+   db.catalog.createIndex({ description: "text", tags: "text" });
+   // Text search query to find products mentioning the word 'wireless'
+  db.catalog.find({
+    $text: { $search: "wireless" }
+    });
+
+
+b) // Query to exclude products mentioning the word 'keyboard'
+db.catalog.find({
+    $text: { $search: "wireless -keyboard"}});
+
+
+
+//  To exclude products mentioning 'keyboard' or 'headphones'
+db.catalog.find({
+    $text: { $search: "wireless -keyboard -headphones" }});
+ 
