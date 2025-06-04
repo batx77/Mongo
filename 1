@@ -1,0 +1,113 @@
+db.createCollection("BookDetails")
+db.BookDetails.insertMany([
+{_id: 1, title: "Clean Code", author: "Robert C. Martin", category: "Software Development", year: 2008 },
+{_id: 2,  title: "JavaScript: The Good Parts", author: "Douglas Crockford", category: "JavaScript", year: 2008 },
+{_id: 3,  title: "Design Patterns", author: "Erich Gamma", category: "Software Design", year: 1994 },
+{_id: 4,  title: "Introduction to Algorithms", author: "Thomas H. Cormen", category: "Algorithms", year: 2009 },
+{_id: 5,  title: "Python Crash Course", author: "Eric Matthes", category: "Python", year: 2015 }
+]);
+
+WHERE:
+db.BookDetails.find({ year: 2008 }).pretty()
+
+AND:
+db.BookDetails.find({
+$and: [
+  { category: "Software Development" },
+  { year: 2008 }
+ ] 
+ }).pretty()
+
+OR:
+db.BookDetails.find({
+$or: [
+    { category: "JavaScript" },
+    { year: 2015 }
+  ]
+  }).pretty()
+
+--------------------------------------------------------------------------------------------------------
+use Books
+db.createCollection("BookDetails")
+db.BookDetails.insertMany([
+  {
+    _id: 1,
+    title: "Clean Code: A Handbook of Agile Software Craftsmanship",
+    author: "Robert C. Martin",
+    category: "Software Development",
+    year: 2008
+  },
+  
+  {
+    _id: 2,
+    title: "JavaScript: The Good Parts",
+    author: "Douglas Crockford",
+    category: "JavaScript",
+    year: 2008
+  },
+  
+  {
+    _id: 3,
+    title: "Design Patterns: Elements of Reusable Object-Oriented Software",
+    author: "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    category: "Software Design",
+    year: 1994
+  },
+  
+  {
+    _id: 4,
+    title: "Introduction to Algorithms",
+    author: "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+    category: "Algorithms",
+    year: 1990
+  },
+  
+  {
+    _id: 5,
+    title: "Python Crash Course: A Hands-On, Project-Based Introduction to Programming",
+    author: "Eric Matthes",
+    category: "Python",
+    year: 2015
+  }
+])
+
+ALL:
+db.BookDetails.find().pretty()
+GREATER THAN:
+db.BookDetails.find({ year: { $gt: 2000 } }).pretty()
+
+UPDATE:(ONE)
+db.BookDetails.updateOne(
+  { title: "Clean Code: A Handbook of Agile Software Craftsmanship" },
+  { $set: { author: "vtucode" } }
+)
+db.BookDetails.find({ year: { $eq: 2008 } }).pretty()
+
+UPDATE:(MANY)
+//To insert the multiple values or documents
+db.BookDetails.updateMany(
+  { year: { $lt: 2010 } },
+  { $set: { category: "vtucode website" } }
+)
+//To see the updated result
+db.BookDetails.find({ year: { $lt: 2010 } }).pretty()
+
+DELETE:
+//To delete the multiple values or documents
+db.BookDetails.deleteMany({ year: { $lt: 1995 } })
+//To verify the deleted document
+db.BookDetails.find().pretty()
+
+DELETE ALL:
+//To delete the all values or document
+db.BookDetails.deleteMany({ })
+//To verify the deleted document
+db.BookDetails.find().pretty()
+
+PROJECTION(SPECIFIC INCLUDE)
+//To retrieve specific include field values or document
+db.ProgrammingBooks.find({}, { title: 1, author: 1 })
+
+PROJECTION(SPECIFIC EXCLUDE)
+//To retrieve specific exclude field values or document
+db.BookDetails.find({}, { year:0 } )
