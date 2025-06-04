@@ -1,0 +1,33 @@
+db.users.insertMany([
+  { name: "Alice", email: "alice@example.com", age: 25, hobbies: ["reading", "traveling"] },
+  { name: "Bob", email: "bob@example.com", age: 30, hobbies: ["music", "gaming"] },
+  { name: "Charlie", email: "charlie@example.com", age: 35 },
+  { name: "Diana", age: 28, hobbies: ["cooking"] }
+]);
+
+
+1) Unique Index
+Prevents duplicate values in a field (e.g., email):
+db.users.createIndex({ email: 1 }, { unique: true })
+
+2) Sparse Index
+Only indexes documents that have the field.
+db.users.createIndex({ age: 1 }, { sparse: true })
+
+
+3)Compound Index
+Indexes multiple fields together:
+db.users.createIndex({ name: 1, age: -1 })
+
+
+4) Multikey Index
+Automatically created for arrays (e.g., hobbies):
+db.users.createIndex({ hobbies: 1 })
+
+5) To check if an index has been created on a MongoDB collection
+db.users.getIndexes()
+
+
+
+b) Demonstrate optimization of queries using indexes. 
+db.users.find({ email: "alice@example.com" }).explain("executionStats")
